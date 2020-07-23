@@ -47,12 +47,14 @@ def save(items, path):
         writer = csv.writer(file, delimiter=';')
         writer.writerow(["Время", "Работа", "Расширенная информация", "Ссылка", "Компания", "Город"])
         for item in items:
-            writer.writerow([item["time"], item["title"], item["description"], item["link"], item["company"], item["location"]])
+            writer.writerow(
+                [item["time"], item["title"], item["description"], item["link"], item["company"], item["location"]])
 
 
 def parse():
     html = get_url(URL)
     if html.status_code == 200:
+        print('Соединение с сервером установлено')
         work = []
         get_data(html.text)
         pages_count = get_pages_count(html.text)
@@ -67,4 +69,7 @@ def parse():
         print("Error connection from site")
 
 
-parse()
+if input() == '':
+    parse()
+elif input('1') == '1':
+    parse(URL)
