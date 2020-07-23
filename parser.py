@@ -73,4 +73,3 @@ if input() == '':
     parse()
 elif input('1') == '1':
     parse(URL)
-22
