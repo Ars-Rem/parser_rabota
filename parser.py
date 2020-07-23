@@ -69,6 +69,7 @@ def parse():
         print("Error connection from site")
 
 
+
 if input() == '':
     parse()
 elif input('1') == '1':
