@@ -1,1 +1,1 @@
-# parser_rabota
+# site parser for job search python
