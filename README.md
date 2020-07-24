@@ -1,1 +1,1 @@
-# site parser for job search python in Ukraune
+# site parser for job search python in Ukraine
