@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import csv
 import sys
 from datetime import datetime
+
 if sys.platform == 'linux':
     import subprocess
 else:
@@ -49,6 +50,7 @@ def get_data(html):
     return work
 
 
+#  TODO:problem with path from win10
 def save(items, path):
     with open(path, 'w', newline='') as file:
         writer = csv.writer(file, delimiter=';')
@@ -72,9 +74,8 @@ def parse():
             save(work, FILE)
         print(f'найдено {len(work)} вакансий')
         if sys.platform == 'linux':
-            opener = "open" if sys.platform == "darwin" else "xdg-open"
+            opener = "open"
             subprocess.call([opener, FILE])
-
         else:
             os.startfile(FILE)
     else:
