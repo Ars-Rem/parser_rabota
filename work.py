@@ -1,13 +1,20 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
-import os
+import sys
+from datetime import datetime
+if sys.platform == 'linux':
+    import subprocess
+else:
+    import os
 
-URL = 'https://rabota.ua/jobsearch/vacancy_list?keyWords=Python&regionId=0'
+# URL = 'https://rabota.ua/jobsearch/vacancy_list?keyWords=Python&regionId=0'
+URL = 'https://rabota.ua/zapros/python/львов/pg1'
 HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/83.0.4103.116 Safari/537.36', 'accept': '*/*'}
 HOST = 'https://rabota.ua'
-FILE = 'work.csv'
+
+FILE = "{}work.csv".format(datetime.now())
 
 
 def get_url(url, params=None):
@@ -17,7 +24,7 @@ def get_url(url, params=None):
 
 def get_pages_count(html):
     soup = BeautifulSoup(html, 'html.parser')
-    page = soup('a', class_='f-always-blue')
+    page = soup('dd', class_='f-always-blue')
     if page:
         return int(page[-1].get_text())
     else:
@@ -32,7 +39,7 @@ def get_data(html):
     for item in items:
         work.append({
             'time': item.find('div', class_='publication-time').get_text(),
-            'title': item.find('p', class_='card-title').get_text(strip='\n'),
+            'title': item.find('h2', class_='card-title').get_text(strip='\n'),
             'description': item.find('div', class_='card-description').get_text(),
             'link': HOST + item.find('a', class_='ga_listing').get('href'),
             'company': item.find('a', class_='company-profile-name').get_text(),
@@ -64,12 +71,14 @@ def parse():
             work.extend(get_data(html.text))
             save(work, FILE)
         print(f'найдено {len(work)} вакансий')
-        os.startfile(FILE)
+        if sys.platform == 'linux':
+            opener = "open" if sys.platform == "darwin" else "xdg-open"
+            subprocess.call([opener, FILE])
+
+        else:
+            os.startfile(FILE)
     else:
         print("Error connection from site")
 
 
-if input() == '':
-    parse()
-elif input('1') == '1':
-    parse(URL)
+parse()
