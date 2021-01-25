@@ -1,2 +1,2 @@
-# site parser for job search python in Ukraine
-# problem with path from win10
+# site parser for job search python
+ problem with path from win10
